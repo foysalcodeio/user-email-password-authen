@@ -1,20 +1,29 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../firebase/firebase.config";
+import { useState } from "react";
 
 const Register = () => {
+    const [registerError, setRegisterError] = useState(' ')
+
     const handleRegister = e => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
         // console.log(email, password);
+
+
+        //reset error
+        setRegisterError(' ');
+
+        
         createUserWithEmailAndPassword(auth, email, password)
         .then( (result) => {
             console.log(result.user);
         } )
         .catch( (error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage)
+        
+            console.error(error)
+            setRegisterError(error.message)
         })
     }
     return (
@@ -28,6 +37,9 @@ const Register = () => {
                 <br />
                 <input className="btn text-white mt-5 mb-4 p-4" type="submit" value="Register" />
             </form>
+            {
+                registerError && <p className="text-red-500">{registerError}</p>
+            }
             </div>
         </div>
     );
