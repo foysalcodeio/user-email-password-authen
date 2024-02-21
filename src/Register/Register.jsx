@@ -15,7 +15,8 @@ const Register = () => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
-        // console.log(email, password);
+        const accepted = e.target.terms.checked;
+        console.log(email, password, accepted);
 
         //reset error
         setRegisterError('');
@@ -33,7 +34,10 @@ const Register = () => {
             setRegisterError('your password atleast 1 character capital letter')
             return;
         }
-
+        else if(!accepted){
+            setRegisterError('please accept term and condition!!')
+            return;
+        }
 
         
 
@@ -79,8 +83,14 @@ const Register = () => {
                 </div>
                 <br />
 
+                <input type="checkbox" name="terms" id="terms" />
+                <label className="ml-2" htmlFor="terms">Accept term & Condition</label>
 
-                <input className="btn text-white mt-5 mb-4 p-4" type="submit" value="Register" />
+                <div className="flex">
+                    <input className="btn text-white mt-5 mb-4 p-4" type="submit" value="Register" />
+                </div>
+
+
             </form>
             {
                 registerError && <p className="text-red-500">{registerError}</p>
