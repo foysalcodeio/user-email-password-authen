@@ -3,6 +3,7 @@ import auth from "../firebase/firebase.config";
 import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 
 const Register = () => {
@@ -53,10 +54,6 @@ const Register = () => {
         })
     }
 
-    const handleShowText  = () =>{
-        console.log('working')
-    }
-
 
     return (
         <div className="border">
@@ -89,7 +86,7 @@ const Register = () => {
                 <div className="flex">
                     <input className="btn text-white mt-5 mb-4 p-4" type="submit" value="Register" />
                 </div>
-
+                <p>Registration done ? Please <Link to="/login">Login</Link></p>
 
             </form>
             {

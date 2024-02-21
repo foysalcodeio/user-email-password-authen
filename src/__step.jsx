@@ -8,7 +8,7 @@
  * -------------------------------------------
  * 1.  Dashboard > Build > Authentication > Sign-in method > add provider : choose the provider 
  * 2.  setting > Project setting > General > Select your technology > i choose : WEB > given nick name- > Add firebase SDK & setup firebase config 
- * 3. 
+ * 3.  Visit Web : 
  * 
  *  
  */
