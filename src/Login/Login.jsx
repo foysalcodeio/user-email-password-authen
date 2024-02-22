@@ -103,7 +103,6 @@ const Login = () => {
 
                         <p>New to this website? Please <Link to="/register">Register</Link></p>
 
-
                     </div>
                     <div className="p-2 ">
                         {

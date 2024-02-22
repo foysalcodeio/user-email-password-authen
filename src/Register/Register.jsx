@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import auth from "../firebase/firebase.config";
 import { useState } from "react";
 import { FaEye } from "react-icons/fa";
@@ -14,10 +14,11 @@ const Register = () => {
 
     const handleRegister = e => {
         e.preventDefault();
+        const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
         const accepted = e.target.terms.checked;
-        console.log(email, password, accepted);
+        console.log(name, email, password, accepted);
 
         //reset error
         setRegisterError('');
@@ -25,7 +26,7 @@ const Register = () => {
         setSuccess('');
 
 
-
+        //validation
         if(password.length < 6){
             setRegisterError('password should be at least 6 character or longer');
             return; // ae function por sa ar agabe na / caracter kom hole pore ar agabe na / mane konsole e error print ar hobe na
@@ -36,19 +37,35 @@ const Register = () => {
             return;
         }
         else if(!accepted){
-            setRegisterError('please accept term and condition!!')
+            setRegisterError('please accept term and condition!!');
             return;
         }
 
-        
 
+        // create user
         createUserWithEmailAndPassword(auth, email, password)
         .then( (result) => {
             console.log(result.user);
-            setSuccess('user created successfully');
+            setSuccess('User Created Succussfully.');
+
+            //update profile
+            // we are add manually 
+            updateProfile((result.user),{
+                displayName: name,
+                photoURL: "https://example.com/jane-q-user/profile.jpg"
+            }).then(()=>{
+                console.log('profile updated')
+            }).catch(()=>{
+
+            })
+            
+            // send verification
+            sendEmailVerification(result.user)
+            .then(() => {
+                alert('please verify your account');
+            })
         } )
         .catch( (error) => {
-        
             console.error(error)
             setRegisterError(error.message)
         })
@@ -62,6 +79,8 @@ const Register = () => {
 
             <form onSubmit={handleRegister} >
 
+                <input className="mb-4 text-white p-4 w-3/4" type="text" name="name" placeholder="your name" id="" required />
+                <br />
                 <input className="mb-4 text-white p-4 w-3/4" type="email" name="email" placeholder="foysal@yahoo.com" id="" required />
                 <br />
 
@@ -70,16 +89,14 @@ const Register = () => {
                 className="text-white p-4 w-3/4"
                 type={showPassword ? "text" : "password"}
                 name="password" 
-                placeholder="foysal#123" id="" />
-                
+                placeholder="foysal#123" id="" />                
                     <span className="ml-5"
                         onClick={ () => setShowPassword(!showPassword)}> 
                             {showPassword ? <FaEye className="text-3xl" /> : <FaEyeSlash className="text-3xl" />}
                     </span>
-
                 </div>
                 <br />
-
+                
                 <input type="checkbox" name="terms" id="terms" />
                 <label className="ml-2" htmlFor="terms">Accept term & Condition</label>
 
@@ -101,3 +118,5 @@ const Register = () => {
 };
 
 export default Register;
+
+
